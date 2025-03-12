@@ -1,0 +1,49 @@
+<template>
+   <lightning-card>
+      <h3 slot="title">
+         <lightning-icon icon-name="custom:custom64" size="small" class="slds-var-m-right_small"></lightning-icon>
+         Eligibility Mapper
+      </h3>
+      <form>
+      <div class="slds-var-p-horizontal_small">
+         <lightning-combobox name="dataspaces" label="Dataspace" value={value}
+            placeholder="Choose an dataspace" options={dataspaceOptions} onchange={handleDataspaceChange}>
+         </lightning-combobox>
+         
+         <div if:false={selectedSegment}>
+            <lightning-input 
+               type="search" label="Segment"
+               placeholder="Type to search segments..." onchange={handleSearchChange}>
+            </lightning-input>
+         </div>
+         <div if:true={selectedSegment}>
+            <lightning-input 
+               type="search" label="Segment" value={selectedSegment.Name} 
+               onchange={handleSearchChange} onkeyup={handleSegmentKeyUp}>
+            </lightning-input>
+         </div>
+         <div if:true={showResults}>
+            <ul class="slds-listbox slds-listbox_vertical" role="listbox">
+               <template for:each={segments} for:item="segment">
+                  <li key={segment.Id} role="presentation" class="slds-listbox__item">
+                     <div class="slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                        role="option" data-id={segment.Id} data-name={segment.Name} onclick={handleSegmentSelection}>
+                        {segment.Name}
+                     </div>
+                  </li>
+               </template>
+            </ul>
+         </div>
+         <div class="slds-var-m-top_medium slds-var-m-bottom_x-large">
+            <lightning-button-group lwc:ref="buttonGroup">
+               <lightning-button label="Inclusion" onclick={handleButtonIncExcClick} variant="neutral" data-value="inclusion"></lightning-button>
+               <lightning-button label="Exclusion" onclick={handleButtonIncExcClick} variant="neutral" data-value="exclusion"></lightning-button>
+            </lightning-button-group>   
+         </div>
+         <div class="slds-var-m-top_medium slds-var-m-bottom_x-large">
+            <lightning-button variant="brand" label="Apply" onclick={handleButtonApplyClick} ></lightning-button>
+         </div>
+      </div>
+      </form>
+</lightning-card>
+</template>
